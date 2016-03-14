@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 import static org.junit.Assert.assertTrue;
 
 public class RegExGeneratorTest {
-ddassdds
+
     private boolean validate(String regEx, int numberOfResults) {
         RegExGenerator generator = new RegExGenerator();
         // TODO: Uncomment parameters

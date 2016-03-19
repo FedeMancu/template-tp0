@@ -87,7 +87,7 @@ public class RegExGeneratorTest {
 
     @Test
     public void testGenerateExample() throws Exception {
-        assertTrue(validate("...+[ab]*d?c", 5));
+        assertTrue(validate("..+[ab]*d?c", 5));
     }
 
     @Test
@@ -97,7 +97,7 @@ public class RegExGeneratorTest {
 
     @Test
     public void testGenerateComplete() throws Exception {
-        assertTrue(validate("...a?[hola]+.*[t].", 2));
+        assertTrue(validate("..a?[hola]+.*[t].", 2));
     }
 
 }

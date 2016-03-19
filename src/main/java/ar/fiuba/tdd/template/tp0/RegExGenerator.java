@@ -171,7 +171,7 @@ public class RegExGenerator {
         return alphabet;
     }
 
-    //Hipotesis: supongo que el "." puede tomar cualquier valor de la "A" a la "Z" y numeros
+    // Hipotesis: supongo que el "." puede tomar cualquier valor de la "A" a la "Z" y numeros
     public String generateAlphabetDot(){
         return "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     }

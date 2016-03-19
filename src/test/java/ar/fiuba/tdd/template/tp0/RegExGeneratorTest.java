@@ -87,7 +87,7 @@ public class RegExGeneratorTest {
 
     @Test
     public void testGenerateExample() throws Exception {
-        assertTrue(validate("..+[ab]*d?c", 5));
+        assertTrue(validate("...+[ab]*d?c", 5));
     }
 
     @Test

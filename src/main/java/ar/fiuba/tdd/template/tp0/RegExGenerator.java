@@ -11,6 +11,8 @@ public class RegExGenerator {
     private static final String REGEX_QUANTIFIER = "La ubicacion del cuantificador es incorrecta.";
     private static final String REGEX_BRACKET_END = "La ubicacion de ] es incorrecta.";
     private static final String REGEX_NO_BRACKET_END = "No se encontro ].";
+    private static final String REGEX_BACKSLASH= "La ubicacion de \\ es incorrecta.";
+
 
     public RegExGenerator(int maxLength) {
         this.maxLength = maxLength;
@@ -25,7 +27,7 @@ public class RegExGenerator {
             if (regEx.length() == 0) throw new Exception(REGEX_EMPTY);
 
             int position = 0;
-            int move = 0;
+            int displacement;
             int lastPosition = regEx.length() - 1;
 
             while (position <= lastPosition) {
@@ -40,41 +42,43 @@ public class RegExGenerator {
                         throw new Exception(REGEX_NO_BRACKET_END);
                     } else {
                         if (bracketEndPosition == lastPosition) {
-                            move = 1;
+                            displacement = 1;
                         } else if (isQuatifier(stringAt(regEx, bracketEndPosition + 1))) {
-                            move = 2;
+                            displacement = 2;
                         } else {
-                            move = 1;
+                            displacement = 1;
                         }
-                        String expression = regEx.substring(position, bracketEndPosition + move);
+                        String expression = regEx.substring(position, bracketEndPosition + displacement);
                         generatedExpression = generatedExpression.concat(generateSequence(expression, generateAlphabetBracket(expression)));
-                        position = bracketEndPosition + move;
+                        position = bracketEndPosition + displacement;
                     }
 
-                } else if (isBar(character)) {
+                } else if (isBackSlash(character)) {
                     if (position == lastPosition) {
-                        move = 1;
+                        throw new Exception(REGEX_BACKSLASH);
+                    } else if (position + 1 == lastPosition) {
+                        displacement = 2;
                     } else if (isQuatifier(stringAt(regEx, position + 2))) {
-                        move = 3;
+                        displacement = 3;
                     } else {
-                        move = 2;
+                        displacement = 2;
                     }
-                    String expression = regEx.substring(position, position + move);
+                    String expression = regEx.substring(position, position + displacement);
                     generatedExpression = generatedExpression.concat(generateSequence(expression, generateAlphabetBar(expression)));
-                    position = position + move;
+                    position = position + displacement;
 
                 } else if (isDot(character)) {
-                    move = getMovementDotAndLiteral(regEx, position);
-                    String expression = regEx.substring(position, position + move);
+                    displacement = getMovementDotAndLiteral(regEx, position);
+                    String expression = regEx.substring(position, position + displacement);
                     generatedExpression = generatedExpression.concat(generateSequence(expression, generateAlphabetDot()));
-                    position = position + move;
+                    position = position + displacement;
 
                 } else {
                     //Es un literal
-                    move = getMovementDotAndLiteral(regEx, position);
-                    String expression = regEx.substring(position, position + move);
+                    displacement = getMovementDotAndLiteral(regEx, position);
+                    String expression = regEx.substring(position, position + displacement);
                     generatedExpression = generatedExpression.concat(generateSequence(expression, generateAlphabetLiteral(expression)));
-                    position = position + move;
+                    position = position + displacement;
                 }
 
             }
@@ -102,7 +106,7 @@ public class RegExGenerator {
         return character.equals("[");
     }
 
-    public boolean isBar(String character) {
+    public boolean isBackSlash(String character) {
         return character.equals("\\");
     }
 
@@ -134,7 +138,7 @@ public class RegExGenerator {
 
     //Ejemplos: [ABC] o [ABC]+
     public String generateAlphabetBracket (String expression){
-        String alphabet = "";
+        String alphabet;
         String lastCharacter = stringAt(expression, expression.length() - 1 );
         if (isQuatifier(lastCharacter)){
             alphabet = expression.substring(1, expression.length() - 2);
@@ -146,7 +150,7 @@ public class RegExGenerator {
 
     //Ejemplos: /[ o /[+
     public String generateAlphabetBar(String expression){
-        String alphabet = "";
+        String alphabet;
         if (expression.length() > 2){
             alphabet = expression.substring(1, expression.length() - 1);
         } else {
@@ -157,7 +161,7 @@ public class RegExGenerator {
 
     //Ejemplos: A o  A+
     public String generateAlphabetLiteral(String expression){
-        String alphabet = "";
+        String alphabet;
         String lastCharacter = stringAt(expression, expression.length() - 1 );
         if (isQuatifier(lastCharacter)){
             alphabet = expression.substring(0, expression.length() - 1);
@@ -174,12 +178,16 @@ public class RegExGenerator {
 
     public int getIterationsForQuantifier (String character) throws Exception {
         Random random = new Random();
+        int minLenght;
         if (character.equals("+")){
-            return random.nextInt(maxLength - 1 + 1) + 1;
+            minLenght = 1;
+            return random.nextInt(maxLength - minLenght + 1) + minLenght;
         } else if (character.equals("?") ){
-            return random.nextInt(1 - 0 + 1) + 0;
+            minLenght = 0;
+            return random.nextInt(1 - minLenght + 1) + minLenght;
         } else if (character.equals("*")) {
-            return random.nextInt(maxLength - 0 + 1) + 0;
+            minLenght = 0;
+            return random.nextInt(maxLength - minLenght + 1) + minLenght;
         } else {
             throw new Exception(REGEX_QUANTIFIER);
         }

@@ -66,7 +66,7 @@ public class RegExGenerator {
                     move = getMovementDotAndLiteral (regEx, position);
                     lista.add(regEx.substring(position, position + move));
                     position = position + move;
-                    getMaxLength(); //TODO para que compile
+                    getMaxLength(); //
 
                 } else {
                     //Es un literal

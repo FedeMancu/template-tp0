@@ -10,10 +10,75 @@ import static org.junit.Assert.assertTrue;
 
 public class RegExGeneratorTest {
 
-    //public static final int MAX_LENGTH = 5;
+    public static final int MAX_LENGTH = 5;
 
-    private boolean validate(String regEx, int numberOfResults) {
-        RegExGenerator generator = new RegExGenerator(/*MAX_LENGTH*/);
+
+    @Test
+    public void testGenerateEmpty() throws Exception {
+        RegExGenerator generator = new RegExGenerator(MAX_LENGTH);
+        List<String> results = generator.generate("", 1);
+
+        assertTrue(true);
+    }
+
+    @Test
+    public void testGenerateOnlyQuatifiers() throws Exception {
+        RegExGenerator generator = new RegExGenerator(MAX_LENGTH);
+        List<String> results = generator.generate("***", 1);
+
+        assertTrue(true);
+    }
+
+    @Test
+    public void testGenerateNoEndBracket() throws Exception {
+        RegExGenerator generator = new RegExGenerator(MAX_LENGTH);
+        List<String> results = generator.generate("a.[c", 1);
+
+        assertTrue(true);
+    }
+
+    @Test
+    public void testGenerateOnlyBracket() throws Exception {
+        RegExGenerator generator = new RegExGenerator(MAX_LENGTH);
+        List<String> results = generator.generate("[hola]", 1);
+
+        assertTrue(true);
+    }
+
+    @Test
+    public void testGenerateExample() throws Exception {
+        RegExGenerator generator = new RegExGenerator(MAX_LENGTH);
+        List<String> results = generator.generate("..+[ab]*d?c", 1);
+
+        assertTrue(true);
+    }
+
+    @Test
+    public void testGenerateBracketAtTheEnd() throws Exception {
+        RegExGenerator generator = new RegExGenerator(MAX_LENGTH);
+        List<String> results = generator.generate("a.*[t]", 1);
+
+        assertTrue(true);
+    }
+
+    @Test
+    public void testGenerateComplete() throws Exception {
+        RegExGenerator generator = new RegExGenerator(MAX_LENGTH);
+        List<String> results = generator.generate("...a?[hola]+.*[t].", 1);
+
+        assertTrue(true);
+    }
+
+    @Test
+    public void testGenerateEscape() throws Exception {
+        RegExGenerator generator = new RegExGenerator(MAX_LENGTH);
+        List<String> results = generator.generate("...a/?[hola]+.*/[t/].", 1);
+
+        assertTrue(true);
+    }
+
+    /*private boolean validate(String regEx, int numberOfResults) throws Exception {
+        RegExGenerator generator = new RegExGenerator(MAX_LENGTH);
 
         List<String> results = generator.generate(regEx, numberOfResults);
         // force matching the beginning and the end of the strings
@@ -26,14 +91,14 @@ public class RegExGeneratorTest {
                         return acc && matcher.find();
                     },
                     (item1, item2) -> item1 && item2);
-    }
+    }*/
 
-    @Test
+    /*@Test
     public void testTokenizer() {
-        RegExGenerator generator = new RegExGenerator(/*MAX_LENGTH*/);
+        RegExGenerator generator = new RegExGenerator(MAX_LENGTH);
         List<String> results = generator.generate("^..+[ab]*d?c$", 2);
         assertTrue(results.size() > 0);
-    }
+    }*/
 
     //TODO: Uncomment these tests
 /*

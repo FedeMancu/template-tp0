@@ -12,71 +12,25 @@ public class RegExGeneratorTest {
 
     public static final int MAX_LENGTH = 5;
 
-    /*@Test
+    @Test(expected = Exception.class)
     public void testGenerateEmpty() throws Exception {
         RegExGenerator generator = new RegExGenerator(MAX_LENGTH);
         List<String> results = generator.generate("", 1);
-
-        assertTrue(true);
     }
 
-    @Test
+    @Test(expected = Exception.class)
     public void testGenerateOnlyQuatifiers() throws Exception {
         RegExGenerator generator = new RegExGenerator(MAX_LENGTH);
         List<String> results = generator.generate("***", 1);
-
-        assertTrue(true);
     }
 
-    @Test
+    @Test(expected = Exception.class)
     public void testGenerateNoEndBracket() throws Exception {
         RegExGenerator generator = new RegExGenerator(MAX_LENGTH);
         List<String> results = generator.generate("a.[c", 1);
-
-        assertTrue(true);
-    }*/
-
-    @Test
-    public void testGenerateOnlyBracket() throws Exception {
-        RegExGenerator generator = new RegExGenerator(MAX_LENGTH);
-        List<String> results = generator.generate("[hola]", 1);
-
-        assertTrue(true);
     }
 
-    @Test
-    public void testGenerateExample() throws Exception {
-        RegExGenerator generator = new RegExGenerator(MAX_LENGTH);
-        List<String> results = generator.generate("..+[ab]*d?c", 1);
-
-        assertTrue(true);
-    }
-
-    @Test
-    public void testGenerateBracketAtTheEnd() throws Exception {
-        RegExGenerator generator = new RegExGenerator(MAX_LENGTH);
-        List<String> results = generator.generate("a.*[t]", 1);
-
-        assertTrue(true);
-    }
-
-    @Test
-    public void testGenerateComplete() throws Exception {
-        RegExGenerator generator = new RegExGenerator(MAX_LENGTH);
-        List<String> results = generator.generate("...a?[hola]+.*[t].", 1);
-
-        assertTrue(true);
-    }
-
-    @Test
-    public void testGenerateEscape() throws Exception {
-        RegExGenerator generator = new RegExGenerator(MAX_LENGTH);
-        List<String> results = generator.generate("...a/?[hola]+.*/[t/].", 1);
-
-        assertTrue(true);
-    }
-
-    /*private boolean validate(String regEx, int numberOfResults) throws Exception {
+    private boolean validate(String regEx, int numberOfResults) throws Exception {
         RegExGenerator generator = new RegExGenerator(MAX_LENGTH);
 
         List<String> results = generator.generate(regEx, numberOfResults);
@@ -85,56 +39,68 @@ public class RegExGeneratorTest {
         return results
                 .stream()
                 .reduce(true,
-                    (acc, item) -> {
-                        Matcher matcher = pattern.matcher(item);
-                        return acc && matcher.find();
-                    },
-                    (item1, item2) -> item1 && item2);
-    }*/
+                        (acc, item) -> {
+                            Matcher matcher = pattern.matcher(item);
+                            return acc && matcher.find();
+                        },
+                        (item1, item2) -> item1 && item2);
+    }
 
-    /*@Test
-    public void testTokenizer() {
-        RegExGenerator generator = new RegExGenerator(MAX_LENGTH);
-        List<String> results = generator.generate("^..+[ab]*d?c$", 2);
-        assertTrue(results.size() > 0);
-    }*/
-
-    //TODO: Uncomment these tests
-/*
     @Test
-    public void testAnyCharacter() {
+    public void testAnyCharacter() throws Exception {
         assertTrue(validate(".", 1));
     }
 
     @Test
-    public void testMultipleCharacters() {
+    public void testMultipleCharacters() throws Exception {
         assertTrue(validate("...", 1));
     }
 
+    /*    @Test
+    public void testLiteral() throws Exception{
+        assertTrue(validate("\\[", 1));
+    }*/
     @Test
-    public void testLiteral() {
-        assertTrue(validate("\\@", 1));
+    public void testLiteralDotCharacter() throws Exception{
+        assertTrue(validate("\\[..", 1));
+    }
+    @Test
+    public void testZeroOrOneCharacter() throws Exception{
+        assertTrue(validate("\\[.h?", 1));
     }
 
     @Test
-    public void testLiteralDotCharacter() {
-        assertTrue(validate("\\@..", 1));
-    }
-
-    @Test
-    public void testZeroOrOneCharacter() {
-        assertTrue(validate("\\@.h?", 1));
-    }
-
-    @Test
-    public void testCharacterSet() {
+    public void testCharacterSet() throws Exception {
         assertTrue(validate("[abc]", 1));
     }
 
     @Test
-    public void testCharacterSetWithQuantifiers() {
+    public void testCharacterSetWithQuantifiers() throws Exception {
         assertTrue(validate("[abc]+", 1));
     }
-*/
-    // TODO: Add more tests!!!
+
+    @Test
+    public void testGenerateExample() throws Exception {
+        RegExGenerator generator = new RegExGenerator(MAX_LENGTH);
+        assertTrue(validate("..+[ab]*d?c", 5));
+    }
+
+    @Test
+    public void testGenerateBracketAtTheEnd() throws Exception {
+        RegExGenerator generator = new RegExGenerator(MAX_LENGTH);
+        assertTrue(validate("a.*[t]", 5));
+    }
+
+    @Test
+    public void testGenerateComplete() throws Exception {
+        RegExGenerator generator = new RegExGenerator(MAX_LENGTH);
+        assertTrue(validate("...a?[hola]+.*[t].", 1));
+    }
+
+    /*@Test
+    public void testGenerateEscape() throws Exception {
+        RegExGenerator generator = new RegExGenerator(MAX_LENGTH);
+        assertTrue(validate("...a\\?[hola]+.+\\[t\\].", 1));
+    }*/
+
 }

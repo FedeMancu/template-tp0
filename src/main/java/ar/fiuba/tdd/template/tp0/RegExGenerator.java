@@ -2,8 +2,6 @@ package ar.fiuba.tdd.template.tp0;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
-import java.util.concurrent.ExecutionException;
 
 public class RegExGenerator {
 
@@ -65,26 +63,14 @@ public class RegExGenerator {
                     position = position + move;
 
                 } else if (isDot (character)){
-                    if (position == lastPosition) {
-                        move = 1;
-                    }
-                    else if (isQuatifier(stringAt(regEx, position + 1))) {
-                        move = 2;
-                    } else {
-                        move = 1;
-                    }
+                    move = getMovementDotAndLiteral (regEx, position);
                     lista.add(regEx.substring(position, position + move));
                     position = position + move;
+                    getMaxLength(); //TODO para que compile
 
                 } else {
                     //Es un literal
-                    if (position == lastPosition) {
-                        move = 1;
-                    }else if (isQuatifier(stringAt(regEx, position + 1))){
-                        move = 2;
-                    } else {
-                        move = 1;
-                    }
+                    move = getMovementDotAndLiteral (regEx, position);
                     lista.add(regEx.substring(position, position + move));
                     position = position + move;
                 }
@@ -93,6 +79,18 @@ public class RegExGenerator {
 
         }
         return lista;
+    }
+
+    //Calcula el desplazamiento hasta el siguiente token para . y literales
+    public int getMovementDotAndLiteral (String regEx, int position){
+        if (position == (regEx.length() - 1)) {
+            return 1;
+        }
+        else if (isQuatifier(stringAt(regEx, position + 1))) {
+            return 2;
+        } else {
+            return 1;
+        }
     }
 
     public boolean isBracketEnd (String character){
@@ -117,6 +115,10 @@ public class RegExGenerator {
 
     public String stringAt (String regEx, int position){
         return String.valueOf(regEx.charAt(position));
+    }
+
+    public int getMaxLength () {
+        return this.maxLength;
     }
 
 }

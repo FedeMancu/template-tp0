@@ -12,8 +12,7 @@ public class RegExGeneratorTest {
 
     public static final int MAX_LENGTH = 5;
 
-
-    @Test
+    /*@Test
     public void testGenerateEmpty() throws Exception {
         RegExGenerator generator = new RegExGenerator(MAX_LENGTH);
         List<String> results = generator.generate("", 1);
@@ -35,7 +34,7 @@ public class RegExGeneratorTest {
         List<String> results = generator.generate("a.[c", 1);
 
         assertTrue(true);
-    }
+    }*/
 
     @Test
     public void testGenerateOnlyBracket() throws Exception {
